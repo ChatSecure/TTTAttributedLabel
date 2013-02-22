@@ -249,6 +249,8 @@ static inline NSAttributedString * NSAttributedStringBySettingColorFromContext(N
     self.activeLinkAttributes = [NSDictionary dictionaryWithDictionary:mutableActiveLinkAttributes];
     
     CFRelease(paragraphStyle);
+    
+    [self attachTapHandler];
 }
 
 - (void)dealloc {
@@ -1125,6 +1127,41 @@ afterInheritingLabelAttributesAndConfiguringWithBlock:(NSMutableAttributedString
     }
 
     return self;
+}
+
+#pragma mark Clipboard
+
+- (void) attachTapHandler
+{
+    [self setUserInteractionEnabled:YES];
+    UILongPressGestureRecognizer *touchy = [[UILongPressGestureRecognizer alloc]
+                                   initWithTarget:self action:@selector(handleTap:)];
+    [self addGestureRecognizer:touchy];
+}
+
+- (void) copy: (id) sender
+{
+    NSLog(@"Copy handler, label: “%@”.", self.text);
+    UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
+    [pasteboard setString:self.text];
+}
+
+- (BOOL) canPerformAction: (SEL) action withSender: (id) sender
+{
+    return (action == @selector(copy:));
+}
+
+- (void) handleTap: (UIGestureRecognizer*) recognizer
+{
+    [self becomeFirstResponder];
+    UIMenuController *menu = [UIMenuController sharedMenuController];
+    [menu setTargetRect:self.frame inView:self.superview];
+    [menu setMenuVisible:YES animated:YES];
+}
+
+- (BOOL) canBecomeFirstResponder
+{
+    return YES;
 }
 
 @end
