@@ -1146,15 +1146,27 @@ afterInheritingLabelAttributesAndConfiguringWithBlock:(NSMutableAttributedString
     [pasteboard setString:self.text];
 }
 
+- (void) deleteMessage: (id) sender
+{
+    if ([self.delegate respondsToSelector:@selector(attributedLabelDidSelectDelete:)]) {
+        [self.delegate attributedLabelDidSelectDelete:self];
+    }
+}
+
 - (BOOL) canPerformAction: (SEL) action withSender: (id) sender
 {
-    return (action == @selector(copy:));
+    return (action == @selector(copy:) || action == @selector(deleteMessage:));
 }
 
 - (void) handleTap: (UIGestureRecognizer*) recognizer
 {
     [self becomeFirstResponder];
+    UIMenuItem * deleteMenuItem = [[UIMenuItem alloc] initWithTitle:@"Delete" action:@selector(deleteMessage:)];
+    
+    
+    
     UIMenuController *menu = [UIMenuController sharedMenuController];
+    menu.menuItems = @[deleteMenuItem];
     [menu setTargetRect:self.frame inView:self.superview];
     [menu setMenuVisible:YES animated:YES];
 }

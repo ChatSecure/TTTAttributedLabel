@@ -364,4 +364,6 @@ didSelectLinkWithPhoneNumber:(NSString *)phoneNumber;
 - (void)attributedLabel:(TTTAttributedLabel *)label
 didSelectLinkWithTextCheckingResult:(NSTextCheckingResult *)result;
 
+- (void)attributedLabelDidSelectDelete:(TTTAttributedLabel *)label;
+
 @end
