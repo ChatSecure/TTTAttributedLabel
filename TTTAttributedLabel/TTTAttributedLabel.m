@@ -1141,7 +1141,7 @@ afterInheritingLabelAttributesAndConfiguringWithBlock:(NSMutableAttributedString
 
 - (void) copy: (id) sender
 {
-    NSLog(@"Copy handler, label: “%@”.", self.text);
+    //NSLog(@"Copy handler, label: “%@”.", self.text);
     UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
     [pasteboard setString:self.text];
 }
